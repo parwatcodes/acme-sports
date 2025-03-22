@@ -3,21 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 import validateApiKey from "../../../lib/middlewares/validateApiKey";
 
 export async function GET(req: NextRequest, { params }: { params: { league: string; }; }) {
-try {
-  const apiKey = req.headers.get('x-api-key')
-  const resp = await validateApiKey(apiKey)
+  try {
+    const apiKey = req.headers.get('x-api-key');
+    const apiKeyData = await validateApiKey(apiKey);
+    const { error, data, description, status } = apiKeyData;
 
-  if (resp?.valid) {
-    return NextResponse.json({ data: resp?.currentUser }, { status: 200 }
-    );
-  } else {
-    const error = resp?.error
-    const statusCode = resp?.status
-    return NextResponse.json(error, { status: statusCode });
+    return NextResponse.json({ data, error, description }, { status });
+
+  } catch (error) {
+    return NextResponse.json({ error: 'Error while authorizing user.' }, { status: 500 });
   }
-
-} catch (error) {
-  return NextResponse.json({ error: 'Error while authorizing user.' }, { status: 500 });
-}
 
 }

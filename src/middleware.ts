@@ -14,21 +14,27 @@ import axiosInstance from "./app/lib/axios";
  * request.
  */
 export async function middleware(req: AuthenticatedRequest) {
-  console.log('logging from middleware......');
+  console.log("logging from middleware......");
+  const { pathname } = req.nextUrl;
+
+  // Avoids running apiKey validation middleware in the api (which does validation) itself, Eliminates unnecessary db calls.
+  if (excludedApiRoutes.some(route => pathname.startsWith(route))) return NextResponse.next();
 
   try {
-    const res = await axiosInstance.get('/auth/authorized-access');
-    req.user = res.data
+    const res = await axiosInstance.get("/auth/authorized-access");
+    req.user = res.data;
 
     return NextResponse.next();
-  } catch (error) {
-    const status = error.response?.status || 500;
-    const message = error.response?.data
-
-    return NextResponse.json(message, { status })
+  } catch (error: any) {
+    const { data, status } = error.response;
+    return NextResponse.json(data, { status });
   }
 }
 
+const excludedApiRoutes = [
+  '/api/auth/authorized-access'
+]
+
 export const config = {
-  matcher: "/api/:path*"
+  matcher: "/api/team_list/:path*"
 };

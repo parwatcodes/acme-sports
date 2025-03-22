@@ -1,8 +1,11 @@
 import axios from "@/src/app/lib/axios";
 import TeamList from "@/src/app/components/Team/TeamList";
 
-export default async function Teams({ params }: { params: { league: string } }) {
-  const league = params.league.toLocaleUpperCase();
+type Params = Promise<{ league: string }>
+
+export default async function Teams(props: { params: Params }) {
+  const league = (await props.params).league.toLocaleUpperCase();
+
   let data = [];
   let errorMessage = "";
 

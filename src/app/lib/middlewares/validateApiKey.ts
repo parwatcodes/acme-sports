@@ -11,8 +11,8 @@ export default async function validateApiKey(apiKey: string | null) {
   try {
     if (!apiKey) {
       return {
-        valid: false,
-        error: { error: 'API key is required.', description: 'unauthenticated.' },
+        error: 'API key is required.',
+        description: 'unauthenticated.',
         status: 401
       };
     }
@@ -27,7 +27,11 @@ export default async function validateApiKey(apiKey: string | null) {
     });
 
     if (!apiKeyRecord || !apiKeyRecord.user) {
-      return { valid: false, error: { error: "Invalid API key", description: "unauthorized." }, status: 403};
+      return {
+        error: "Invalid API key",
+        description: "unauthorized.",
+        status: 403
+      };
     }
 
     const { user: { id, email }, key } = apiKeyRecord;
@@ -37,8 +41,13 @@ export default async function validateApiKey(apiKey: string | null) {
       apiKey: key
     };
 
-    return { valid: true, currentUser };
+    return { data: currentUser, description: 'User details for api key provided', status: 200 };
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Error from validateApiKey func: ", error);
+    return {
+      error: `Error while validating api key`,
+      description: error,
+      status: 500
+    };
   }
 }
