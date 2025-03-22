@@ -4,7 +4,7 @@ import validateApiKey from "../../../lib/middlewares/validateApiKey";
 
 export async function GET(req: NextRequest, { params }: { params: { league: string; }; }) {
   try {
-    const apiKey = req.headers.get('x-api-key');
+    const apiKey = req.headers.get('X-API-KEY');
     const apiKeyData = await validateApiKey(apiKey);
     const { error, data, description, status } = apiKeyData;
 

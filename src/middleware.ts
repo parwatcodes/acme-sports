@@ -16,12 +16,19 @@ import axiosInstance from "./app/lib/axios";
 export async function middleware(req: AuthenticatedRequest) {
   console.log("logging from middleware......");
   const { pathname } = req.nextUrl;
+  const apiKey = req.headers.get('X-API-KEY')
+
+  if (!apiKey) return NextResponse.json({ error: 'No API Key provided' }, { status: 401 })
 
   // Avoids running apiKey validation middleware in the api (which does validation) itself, Eliminates unnecessary db calls.
   if (excludedApiRoutes.some(route => pathname.startsWith(route))) return NextResponse.next();
 
   try {
-    const res = await axiosInstance.get("/auth/authorized-access");
+    const res = await axiosInstance.get("/auth/authorized-access", {
+      headers: {
+        'X-API-KEY': apiKey
+      }
+    });
     req.user = res.data;
 
     return NextResponse.next();
