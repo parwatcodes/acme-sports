@@ -32,16 +32,7 @@ To simulate a real-world scenario where users access web services via authentica
 npm install
 ```
 
-**It will work without running the seed because i have used remote db and already seeded the data and .env local file contains API KEY and pg db connection url** or to use own db change the `DATABASE_URL` in `.env` file and seed data and copy the `API_KEY` and keep in `.env`.
-
-
-4. Seed the database:
-
-This script creates a default user, generates an API key, and seeds the NFL team data. API key will be displayed in terminal.
-
-```bash
-node src/app/seed/init.ts
-```
+**It will work without running the seed because i have used remote db and already seeded the data and .env local file contains API KEY and pg db connection url**
 
 To run the application in dev mode.
 ```bash
@@ -54,6 +45,28 @@ http://localhost:3000
 ```
 
 ---
+
+## 🔐 Authentication via API KEY
+
+I've implemented **two methods** for handling API key authentication:
+
+---
+
+### 1. Automatic API Key Injection (Default Branch)
+- The API key is securely stored in the `.env` file.
+- A custom `axios` instance automatically includes the API key in the request headers.
+- Any request made **from the client application** (e.g., `http://localhost:3000`) will include the API key by default.
+- Also accessing backend apis `http://localhost:3000/api/*` will automatically include api key (due to middleware configuration, as middleware sends a axios request to validate api key, so sending a axios means api key is already in headers)
+
+### 2. Change the git branch to `feat/explicit-api-key`
+  - This method is ideal for **external API testing** (e.g., using Postman or cURL).
+- You need to **manually set** the API key in the headers for a request:
+
+  ```http
+  X-API-KEY: 74684188-7553-441d-92ee-b9da9ead2b75
+  ```
+- If the API key is missing or invalid, the server returns an appropriate error message with status codes.
+
 
 ## 🎨 UI/UX + SEO
 
