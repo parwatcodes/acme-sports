@@ -1,10 +1,12 @@
 "use client";
 
+import { Dispatch, SetStateAction } from "react";
+
 export default function Filter({ sortBy, setSortBy, groupBy, setGroupBy }: {
   sortBy: string;
-  setSortBy: (value: string) => void;
+  setSortBy: Dispatch<SetStateAction<"name" | "conference" | "division" | "none">>
   groupBy: string;
-  setGroupBy: (value: string) => void;
+  setGroupBy: Dispatch<SetStateAction<"conference" | "division" | "none">>
 }) {
 
   const activeFiltersCount = () => {
@@ -20,7 +22,7 @@ export default function Filter({ sortBy, setSortBy, groupBy, setGroupBy }: {
       <select
         className={`p-2 outline-none border rounded-md shadow-sm border-gray-300`}
         value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
+        onChange={(e) => setSortBy(e.target.value as "name" | "conference" | "division" | "none")}
       >
         <option value="none">Sort by</option>
         <option value="name">Name</option>
@@ -31,7 +33,7 @@ export default function Filter({ sortBy, setSortBy, groupBy, setGroupBy }: {
       <select
         className={`p-2 border outline-none rounded-md shadow-sm border-gray-300`}
         value={groupBy}
-        onChange={(e) => setGroupBy(e.target.value)}
+        onChange={(e) => setGroupBy(e.target.value as "conference" | "division" | "none")}
       >
         <option value="none">Group by</option>
         <option value="conference">Conference</option>
