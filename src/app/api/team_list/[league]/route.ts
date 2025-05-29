@@ -6,10 +6,10 @@ import { Leagues as ValidLeagues, ValidSortFields } from '@/src/app/utils/consta
 /**
  * Handle GET requests to fetch a list of teams based on the league and sorting field.
  */
-export async function GET(req: NextRequest, { params }: { params: Promise<{ league: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: { league: string; }; }) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const league =( await params).league
+    const { league } = params;
     const sort_by = searchParams.get('sort_by');
 
     if (!validateLeague(league)) {

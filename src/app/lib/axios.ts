@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-console.log('sxxx', process.env)
-
 /* Global configuration for axios instance */
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
