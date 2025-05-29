@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import validateApiKey from "../../../lib/middlewares/validateApiKey";
 
-export async function GET(req: NextRequest, { params }: { params: { league: string; }; }) {
+export async function GET(req: NextRequest) {
   try {
     const apiKey = req.headers.get('x-api-key');
     const apiKeyData = await validateApiKey(apiKey);

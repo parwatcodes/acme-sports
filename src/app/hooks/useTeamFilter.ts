@@ -21,7 +21,7 @@ import { Team } from '../utils/interfaces';
  * - `setGroupBy`: A function to update the grouping criteria.
  */
 export default function useTeamFilter(teams: any) {
-  const [sortBy, setSortBy] = useState<"name" | "conference" | "division">("none");
+  const [sortBy, setSortBy] = useState<"none" | "name" | "conference" | "division">("none");
   const [groupBy, setGroupBy] = useState<"none" | "conference" | "division">("none");
   const [filteredTeams, setFilteredTeams] = useState<Team[] | Record<string, Team[]>>(teams);
 
